@@ -2,6 +2,23 @@
 
 All notable changes to `dsh-worktree` are documented here. The project follows Semantic Versioning.
 
+## 1.0.0 — 2026-08-16
+
+### Added
+
+- Final compatibility documentation for Windows and Ubuntu on Node `22.19.0` and Node `24`.
+- Reproducible packed-artifact and live Harness acceptance evidence.
+
+### Fixed
+
+- Windows integration tests now compare Git's canonical worktree path instead of assuming the temporary-directory path spelling is preserved.
+- CI actions now use their Node 24 runtime releases.
+
+### Validated
+
+- All 49 tests and `npm pack --dry-run` pass across the four supported CI combinations.
+- Installation, composition, no-API boot, direct tool execution, API-backed tool selection, session auditing, and removal pass with DeepSeek Harness `0.1.0-rc.6`.
+
 ## 1.0.0-rc.2 — 2026-08-15
 
 ### Fixed
