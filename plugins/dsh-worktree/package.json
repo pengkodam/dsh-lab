@@ -1,6 +1,6 @@
 {
   "name": "dsh-worktree",
-  "version": "1.0.0-rc.2",
+  "version": "1.0.0",
   "description": "Read-only Git worktree discovery, status, and comparison tools for DeepSeek Harness",
   "type": "module",
   "main": "./index.js",

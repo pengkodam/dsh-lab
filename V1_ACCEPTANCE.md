@@ -1,12 +1,12 @@
 # dsh-worktree v1.0 Acceptance Record
 
-**Candidate:** `1.0.0-rc.2`  
-**Date:** 2026-08-15  
-**Platform:** Windows  
-**DeepSeek Harness:** `0.1.0-rc.6`  
-**Node.js:** `v24.19.0`  
-**Git:** `2.39.1.windows.1`  
-**Status:** All local and Harness acceptance gates verified; multi-platform CI pending
+- **Candidate:** `1.0.0`
+- **Date:** 2026-08-16
+- **Platform:** Windows locally; Windows and Ubuntu in GitHub Actions
+- **DeepSeek Harness:** `0.1.0-rc.6`
+- **Node.js:** `v24.19.0`
+- **Git:** `2.39.1.windows.1`
+- **Status:** Local, package, Harness, and pre-promotion multi-platform gates verified
 
 ## Local automated verification
 
@@ -25,19 +25,30 @@
 
 - `npm pack --dry-run --json` succeeded with a task-scoped temporary cache.
 - `pnpm pack --dry-run --json` independently reported the same declared file set.
-- The packed archive is `dsh-worktree-1.0.0-rc.2.tgz`.
-- The installed pnpm-built archive is 12,372 bytes with SHA-256 `853d73845b6bbeb763909011aa33faa88249c25204f601794d470c00385c28ad`.
-- npm’s independent dry run projected 43,533 unpacked bytes and the same 16-file set; npm and pnpm use different tarball serialization, so their archive byte hashes are not expected to match.
+- The final packed archive is `dsh-worktree-1.0.0.tgz`.
+- The pnpm-built archive is 12,692 bytes with SHA-256 `96ab106b8e7d68711b5dc19850eaf4277fccfd3fc8420f55d68e338494deb832`.
+- npm’s independent dry run projected a 12,595-byte archive, 44,620 unpacked bytes, and the same 16-file set; npm and pnpm use different tarball serialization, so their archive byte hashes are not expected to match.
 - The archive contains 16 declared files: manifest, license, README, changelog, bundle patch, runtime entry, and runtime source modules.
 - Tests, fixtures, workspace planning documents, credentials, caches, and unrelated files are absent.
 
 ## Multi-platform CI
 
-The repository defines Windows and Ubuntu jobs for Node `22.19.0` and Node `24`. Live CI results are pending because this workspace is not currently a Git checkout connected to a remote.
+- The [pre-promotion `main` run](https://github.com/pengkodam/dsh-lab/actions/runs/31916423161) passed on GitHub-hosted Windows and Ubuntu with Node `22.19.0` and Node `24`.
+- Every job ran all 49 tests and `npm pack --dry-run` successfully.
+- The Windows path-spelling regression exposed by the first remote run was corrected in [PR #1](https://github.com/pengkodam/dsh-lab/pull/1) by comparing Git's canonical top-level path; the product implementation did not change.
+- The release branch upgrades the official checkout and setup-node actions to their Node 24 runtime releases. Final branch evidence is recorded before tagging.
 
 ## Harness integration
 
 Completed for this candidate:
+
+- The exact final `1.0.0` archive was installed into a new disposable `lab-v1-final` profile.
+- Final-package `--dump-config` composition contained the `dsh-worktree` layer and plugin row.
+- `scripts/accept-plugin.mjs` imported the installed final package and reported the intended three tools, two fixture worktrees, one primary untracked file, and the linked worktree one commit ahead.
+- The final-package interactive process stayed active for the no-API smoke interval and was then cancelled intentionally.
+- Reinstalling the same final archive succeeded, removal succeeded, and the post-removal profile composed without a `dsh-worktree` layer or plugin row.
+
+Completed for the runtime-identical release candidate:
 
 - The exact packed archive was installed into a new isolated `lab-v1-rc` profile.
 - `--dump-config` composed successfully and contained the `dsh-worktree` layer plus `id: dsh-worktree` plugin row.
@@ -50,18 +61,16 @@ Completed for this candidate:
 - The final answer reported exactly two worktrees, one untracked file in the primary `main` worktree, a clean `feature/demo` worktree, and `feature/demo` one commit and one file ahead of the primary worktree.
 - The persisted compressed session contained 90 events across 47 concatenated zstd frames. `scripts/audit-session.mjs` found three `tool/call` events naming `git_worktree_list`, `git_worktree_status`, and `git_worktree_compare`.
 - Removing `dsh-worktree` from `lab-v1-rc` succeeded. A subsequent `--dump-config` exited successfully, retained the official headless runner, and contained no `dsh-worktree` layer or plugin row.
-- The generated `.acceptance-demo-v1` fixture and known-broken rc.1 tarball were removed after evidence capture. `scripts/create-demo-fixture.mjs` can reproduce the fixture; the verified rc.2 tarball remains.
+- The generated `.acceptance-demo-v1` fixture and known-broken rc.1 tarball were removed after evidence capture. `scripts/create-demo-fixture.mjs` can reproduce the fixture; the verified rc.2 and final tarballs remain locally ignored release artifacts.
 
 ### Release-candidate correction
 
 The first authorized rc.1 attempt stopped before any model call because Harness `0.1.0-rc.6` rejected the standard JSON Schema `minimum` keyword. rc.2 removed that unsupported keyword, added a recursive schema-subset regression test, repacked, reinstalled, and passed no-API boot plus API-backed acceptance. This failed gate is retained in the record because it demonstrates that the live contract check caught a defect not visible to a generic JSON Schema test.
 
-Pending for this candidate:
+The final promotion changes only package metadata, documentation, tests, and CI configuration; `index.js` and `src/` are unchanged from the API-backed rc.2 artifact. The final archive was nevertheless reinstalled and re-exercised directly as described above.
 
-- multi-platform CI from a Git-connected repository.
-
-The v0.1 bundle previously passed installation, composition, activation, and API-backed selection with DeepSeek Harness `0.1.0-rc.6`. That evidence is not substituted for the v1 candidate gates.
+The v0.1 bundle previously passed installation, composition, activation, and API-backed selection with DeepSeek Harness `0.1.0-rc.6`. That evidence is not substituted for the v1 gates.
 
 ## Final-release rule
 
-Do not change the package version to `1.0.0` or tag a final release until multi-platform CI passes and its sanitized evidence is recorded here.
+Tag `v1.0.0` only from the reviewed release commit after its final Windows/Ubuntu matrix passes.

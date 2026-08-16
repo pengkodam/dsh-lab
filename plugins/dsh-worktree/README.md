@@ -12,7 +12,7 @@ The tools accept no model-supplied path, revision, executable, or Git option.
 
 ## Release status
 
-`1.0.0-rc.2` is a release candidate. Its automated local acceptance suite passes on Windows. Multi-platform CI and live Harness activation/model-selection checks remain release gates for `1.0.0`.
+`1.0.0` passed the automated suite and package dry run on Windows and Ubuntu with Node `22.19.0` and Node `24`. Packed-artifact installation, configuration composition, no-API boot, direct tool acceptance, API-backed model selection, session auditing, and removal were validated with DeepSeek Harness `0.1.0-rc.6`.
 
 The v0.1 baseline was installed, composed, boot-smoke-tested, and API acceptance-tested with DeepSeek Harness `0.1.0-rc.6` on 2026-08-14. Harness is in developer preview, so repeat the live gates after every Harness upgrade.
 
@@ -64,7 +64,15 @@ Comparison includes:
 - Git with `worktree list --porcelain -z` and status porcelain v2 support
 - A compatible DeepSeek Harness developer-preview release
 
-The current local automated baseline is Git `2.39.1.windows.1`. Final compatibility is recorded in the release acceptance document.
+The release matrix is:
+
+| Environment | Node | Result |
+| --- | --- | --- |
+| Windows | `22.19.0`, `24` | Tests and package dry run pass |
+| Ubuntu | `22.19.0`, `24` | Tests and package dry run pass |
+| DeepSeek Harness | `0.1.0-rc.6` with Node `24.19.0` | Packed activation and model-backed demonstration pass |
+
+The local Git acceptance baseline is `2.39.1.windows.1`. Full evidence is recorded in the release acceptance document.
 
 ## Test locally
 

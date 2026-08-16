@@ -58,11 +58,13 @@
   Acceptance: The renderer identifies its primary baseline, never returns full patches, escapes control characters, and avoids merge-safety claims.
   Verify: Run schema, plugin-registration, and renderer tests, then inspect representative output manually.
 
-- [ ] **9. Prove repository-wide safety and portability**
+- [x] **9. Prove repository-wide safety and portability**
   Spec ref: `V1_PRD.md > FR-7 — Read-only proof` and `V1_TECHNICAL_SPEC.md > Testing Strategy`
   What to build: Expand real-repository fixtures, read-only snapshots, aggregate cancellation tests, and multi-platform CI.
   Acceptance: The complete suite passes on supported Node versions on Windows and at least one Unix-like environment with no Git-state mutation.
   Verify: Run `node --test`, CI, fixture cleanup checks, and before/after invariant comparisons.
+
+  Result: 49 tests and package dry runs pass on GitHub-hosted Windows and Ubuntu with Node `22.19.0` and Node `24`; real-repository tests preserve refs, worktree content, and index bytes.
 
 - [x] **10. Validate the Harness demonstration**
   Spec ref: `V1_PRD.md > Release Narrative` and `V1_TECHNICAL_SPEC.md > Harness acceptance`
@@ -72,11 +74,13 @@
 
   Result: rc.2 passed packed install, composition, no-API boot, direct installed-tool acceptance, API-backed execution, persisted three-tool audit, and uninstall verification against a generated fixture.
 
-- [ ] **11. Finish the releasable package**
+- [x] **11. Finish the releasable package**
   Spec ref: `V1_TECHNICAL_SPEC.md > Packaging and Release` and `V1_PRD.md > Release Acceptance`
   What to build: Complete versioning, changelog, compatibility table, install/upgrade/remove docs, package contents, and final acceptance record.
   Acceptance: A new user can reproduce installation and the demo from the README; all release gates pass against the packed artifact.
   Verify: Run the complete test suite, `npm pack --dry-run`, packaged install/upgrade/uninstall checks, and a documentation command audit before tagging `v1.0.0`.
+
+  Result: Versioning, changelog, compatibility matrix, lifecycle documentation, package contents, and acceptance evidence are complete for `1.0.0`.
 
 ## Release Gate
 
