@@ -70,7 +70,8 @@ test('compares real identical, ahead, behind, diverged, and unrelated worktrees 
 
   const result = await compareGitWorktrees({ cwd: mainPath })
 
-  assert.equal(result.base.path, mainPath.replaceAll('\\', '/'))
+  // Git may expand a Windows 8.3 path (for example RUNNER~1) to its long form.
+  assert.equal(result.base.path, git(mainPath, 'rev-parse', '--show-toplevel'))
   assert.equal(result.base.branch, 'main')
   assert.equal(result.comparisons.length, 5)
   const byBranch = new Map(result.comparisons.map(comparison => [comparison.branch, comparison]))
