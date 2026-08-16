@@ -80,7 +80,7 @@
   Acceptance: A new user can reproduce installation and the demo from the README; all release gates pass against the packed artifact.
   Verify: Run the complete test suite, `npm pack --dry-run`, packaged install/upgrade/uninstall checks, and a documentation command audit before tagging `v1.0.0`.
 
-  Result: Versioning, changelog, compatibility matrix, lifecycle documentation, package contents, and acceptance evidence are complete for `1.0.0`.
+  Result: Versioning, changelog, compatibility matrix, lifecycle documentation, package contents, and acceptance evidence are complete for `1.0.0`; the final release branch passes its full Windows/Ubuntu matrix.
 
 ## Release Gate
 

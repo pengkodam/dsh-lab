@@ -6,7 +6,7 @@
 - **DeepSeek Harness:** `0.1.0-rc.6`
 - **Node.js:** `v24.19.0`
 - **Git:** `2.39.1.windows.1`
-- **Status:** Local, package, Harness, and pre-promotion multi-platform gates verified
+- **Status:** All release gates verified
 
 ## Local automated verification
 
@@ -36,7 +36,7 @@
 - The [pre-promotion `main` run](https://github.com/pengkodam/dsh-lab/actions/runs/31916423161) passed on GitHub-hosted Windows and Ubuntu with Node `22.19.0` and Node `24`.
 - Every job ran all 49 tests and `npm pack --dry-run` successfully.
 - The Windows path-spelling regression exposed by the first remote run was corrected in [PR #1](https://github.com/pengkodam/dsh-lab/pull/1) by comparing Git's canonical top-level path; the product implementation did not change.
-- The release branch upgrades the official checkout and setup-node actions to their Node 24 runtime releases. Final branch evidence is recorded before tagging.
+- The final `1.0.0` branch passed both its [push matrix](https://github.com/pengkodam/dsh-lab/actions/runs/31916749466) and [PR matrix](https://github.com/pengkodam/dsh-lab/actions/runs/31916763915) with the official checkout and setup-node actions on their Node 24 runtimes.
 
 ## Harness integration
 
@@ -73,4 +73,4 @@ The v0.1 bundle previously passed installation, composition, activation, and API
 
 ## Final-release rule
 
-Tag `v1.0.0` only from the reviewed release commit after its final Windows/Ubuntu matrix passes.
+All candidate gates are satisfied. Tag `v1.0.0` only from the reviewed merge commit after its `main` Windows/Ubuntu matrix passes.
