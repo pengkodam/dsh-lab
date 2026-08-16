@@ -1,5 +1,9 @@
 # dsh-worktree
 
+[![CI](https://github.com/pengkodam/dsh-lab/actions/workflows/ci.yml/badge.svg)](https://github.com/pengkodam/dsh-lab/actions/workflows/ci.yml)
+[![Release](https://img.shields.io/github/v/release/pengkodam/dsh-lab)](https://github.com/pengkodam/dsh-lab/releases/latest)
+[![License](https://img.shields.io/github/license/pengkodam/dsh-lab)](./LICENSE)
+
 Read-only Git worktree intelligence for DeepSeek Harness.
 
 The bundle registers three zero-argument model tools for the repository containing the directory from which Harness was launched:
@@ -23,6 +27,8 @@ Launch Harness from inside a repository that has linked worktrees and ask:
 > Inspect every worktree in this repository. Tell me which ones have uncommitted work, how their committed changes differ from the primary worktree, and what I should review first.
 
 An evidence-backed answer should use the dedicated tools, distinguish local changes from committed differences, and avoid claiming that any result is “safe to merge.” Upstream ahead/behind facts use local refs; the tool never fetches.
+
+For a deterministic two-worktree fixture and the expected facts, follow the repository's [60-second demonstration](../../README.md#60-second-demonstration).
 
 ## Canonical facts
 
@@ -84,7 +90,21 @@ node --test
 npm pack --dry-run
 ```
 
-## Install into an isolated profile
+## Install the released archive into an isolated profile
+
+From any working directory with GitHub CLI available:
+
+```powershell
+gh release download v1.0.0 --repo pengkodam/dsh-lab --pattern dsh-worktree-1.0.0.tgz
+dsh plugin --profile worktree-demo add ./dsh-worktree-1.0.0.tgz
+dsh plugin --profile worktree-demo add @deepseek-ai/dsh-headless@0.1.0-rc.6
+dsh --profile worktree-demo --dump-config
+dsh --profile worktree-demo "Inspect every worktree in this repository."
+```
+
+The configuration dump should contain a `dsh-worktree` layer and a plugin row with `id: dsh-worktree`. The final model-backed command requires `DEEPSEEK_API_KEY` to already be set in the environment. Omit the headless package and final command if only configuration composition is being checked.
+
+## Install from a source checkout
 
 Run from the `dsh-lab` project root:
 
@@ -94,7 +114,7 @@ dsh --profile lab --dump-config
 dsh --profile lab
 ```
 
-The configuration dump should contain a `dsh-worktree` layer and a plugin row with `id: dsh-worktree`.
+This form links the working directory and is intended for plugin development. Use the released archive when reproducing acceptance evidence.
 
 ## Upgrade the isolated profile
 
